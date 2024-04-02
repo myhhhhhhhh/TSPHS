@@ -121,11 +121,13 @@ void QNet::SetupGraphInput(std::vector<int>& idxes,
                            std::vector< std::vector<int>* >& covered, 
                            const int* actions)
 {
+    // covered contains the states 
+    // idxes is batch_idxes
     list_set.resize(idxes.size());
     for (size_t i = 0; i < idxes.size(); ++i)
         list_set[i].clear();
 
-	int node_cnt = 0, edge_cnt = 0;
+	int node_cnt = 0, edge_cnt = 0;     // node nums and edge nums
     for (size_t i = 0; i < idxes.size(); ++i)
     {
         auto& g = g_list[idxes[i]];
@@ -270,10 +272,12 @@ void QNet::SetupTrain(std::vector<int>& idxes,
                       std::vector<double>& target)
 {    
     SetupGraphInput(idxes, g_list, covered, actions.data());
-
+    // covered contains the states 
+    // idxes is batch_idxes
     y.Reshape({idxes.size(), (size_t)1});
     for (size_t i = 0; i < idxes.size(); ++i)
         y.data->ptr[i] = target[idxes[i]];
+            // target contains the reward
     m_y.CopyFrom(y);
 }
 

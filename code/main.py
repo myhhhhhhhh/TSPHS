@@ -10,7 +10,6 @@ from tqdm import tqdm
 sys.path.append( '%s/tsp2d_lib' % os.path.dirname(os.path.realpath(__file__)) )
 from tsp2d_lib.tsp2d_lib import Tsp2dLib
 
-n_valid = 100
 
 def find_model_file(opt):
     max_n = int(opt['max_n'])
@@ -80,8 +79,7 @@ if __name__ == '__main__':
     
     opt = {}
     for i in range(1, len(sys.argv), 2):
-        opt[sys.argv[i][1:]] = sys.argv[i + 1]
-    # print("opt: ", opt)
+        opt[sys.argv[i][1:]] = sys.argv[i + 1] 
     model_file = find_model_file(opt)
     if model_file is not None:
         print('loading', model_file)
@@ -92,9 +90,11 @@ if __name__ == '__main__':
     PrepareGraphs(isValid=False)
 
     # startup    
+    n_valid = 100
     for i in range(10):
         api.lib.PlayGame(100, ctypes.c_double(1.0))
-    api.TakeSnapshot()  # 更新参数
+        # Simulator::run_simulator(n_traj, eps);    env.step(action) with replay buffer, add 100 memory to replay buffer here 
+    api.TakeSnapshot()  # update parameters
 
     eps_start = 1.0
     eps_end = 1.0
@@ -103,19 +103,19 @@ if __name__ == '__main__':
     api.lib.SetSign(1)
 
     lr = float(opt['learning_rate'])
-    for iter in range(int(opt['max_iter'])):
+    for iter in range(int(opt['max_iter'])):        # max_iter=200000
         eps = eps_end + max(0., (eps_start - eps_end) * (eps_step - iter) / eps_step)  # epsilon-greedy
         if iter % 10 == 0:
-            api.lib.PlayGame(10, ctypes.c_double(eps))
+            api.lib.PlayGame(10, ctypes.c_double(eps))  
+            # Simulator::run_simulator(n_traj, eps);    env.step(action) with replay buffer, add 10 memory to replay buffer here 
 
         if iter % 100 == 0:
             frac = 0.0
-            for idx in range(n_valid):
-                frac += api.lib.Test(idx)
+            for idx in range(n_valid):     # n_valid=100
+                frac += api.lib.Test(idx)       # env.step(action) without replay buffer, don't add memory to replay buffer 
             print('iter', iter, 'lr', lr, 'eps', eps, 'average tour length: ', frac / n_valid)
             sys.stdout.flush()
-            model_path = '%s/nrange_%d_%d_iter_%d.model' % (opt['save_dir'], int(opt['min_n']), int(opt['max_n']), iter)
-            # print('model path:', model_path)
+            model_path = '%s/nrange_%d_%d_iter_%d.model' % (opt['save_dir'], int(opt['min_n']), int(opt['max_n']), iter) 
             api.SaveModel(model_path)
 
         if iter % 1000 == 0:

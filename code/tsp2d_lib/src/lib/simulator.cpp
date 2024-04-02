@@ -15,7 +15,7 @@ std::uniform_real_distribution<double> Simulator::distribution(0.0,1.0);
 
 void Simulator::Init(int num_env)
 {
-    env_list.resize(num_env);
+    env_list.resize(num_env);   // num_env=1
     g_list.resize(num_env);
     covered.resize(num_env);
     pred.resize(num_env);
@@ -39,7 +39,8 @@ void Simulator::run_simulator(int num_seq, double eps)
                 if (env_list[i]->graph && env_list[i]->isTerminal())
                 {
                     n++;
-                    NStepReplayMem::Add(env_list[i]);
+                    NStepReplayMem::Add(env_list[i]);   
+                    // add env data into the memory 
                 }
                 env_list[i]->s0(GSetTrain.Sample());
                 g_list[i] = env_list[i]->graph;

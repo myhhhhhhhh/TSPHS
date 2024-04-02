@@ -36,6 +36,7 @@ int SaveModel(const char* filename)
 
 std::vector< std::vector<double>* > list_pred;
 Tsp2dEnv* test_env;
+
 int Init(const int argc, const char** argv)
 {
     signal(SIGINT, intHandler);
@@ -113,10 +114,11 @@ double Fit(const double lr)
     for (int i = 0; i < cfg::batch_size; ++i)
     {
         double q_rhs = 0;
-        if (!sample.list_term[i])
+        if (!sample.list_term[i])   
+        // decay=0.1
             q_rhs = cfg::decay * max(sample.g_list[i]->num_nodes, list_pred[i]->data());
         q_rhs += sample.list_rt[i];
-        list_target[i] = q_rhs;
+        list_target[i] = q_rhs;     // reward 
     }
 
 

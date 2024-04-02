@@ -60,6 +60,9 @@ void PredictWithSnapshot(std::vector< std::shared_ptr<Graph> >& g_list, std::vec
 
 double Fit(const double lr, std::vector< std::shared_ptr<Graph> >& g_list, std::vector< std::vector<int>* >& covered, std::vector<int>& actions, std::vector<double>& target)
 {   
+    // these data come from sampling 
+    // target contains the reward
+
     Dtype loss = 0;
     int n_graphs = g_list.size();
     for (int i = 0; i < n_graphs; i += cfg::batch_size)
@@ -73,6 +76,7 @@ double Fit(const double lr, std::vector< std::shared_ptr<Graph> >& g_list, std::
             batch_idxes[j - i] = j;
 
         net->SetupTrain(batch_idxes, g_list, covered, actions, target);
+        // train the model using sampled data 
         net->fg.FeedForward({net->loss}, net->inputs, Phase::TRAIN);
         net->fg.BackPropagate({net->loss});
         net->learner->cur_lr = lr;
