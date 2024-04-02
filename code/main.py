@@ -104,8 +104,7 @@ if __name__ == '__main__':
 
     lr = float(opt['learning_rate'])
     for iter in range(int(opt['max_iter'])):
-        eps = eps_end + max(0., (eps_start - eps_end) * (eps_step - iter) / eps_step)
-        # epsilon?
+        eps = eps_end + max(0., (eps_start - eps_end) * (eps_step - iter) / eps_step)  # epsilon-greedy
         if iter % 10 == 0:
             api.lib.PlayGame(10, ctypes.c_double(eps))
 
