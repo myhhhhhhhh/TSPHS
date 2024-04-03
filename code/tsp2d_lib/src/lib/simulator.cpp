@@ -40,7 +40,7 @@ void Simulator::run_simulator(int num_seq, double eps)
                 {
                     n++;
                     NStepReplayMem::Add(env_list[i]);   
-                    // add env data into the memory 
+                    // add env data into the memory, when isTerminal() is true
                 }
                 env_list[i]->s0(GSetTrain.Sample());
                 g_list[i] = env_list[i]->graph;

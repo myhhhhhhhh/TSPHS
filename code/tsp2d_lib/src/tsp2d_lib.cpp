@@ -106,6 +106,7 @@ double Fit(const double lr)
         {
             ness = true;
             break;
+            // find the 1st false 
         }
     if (ness)
         PredictWithSnapshot(sample.g_list, sample.list_s_primes, list_pred);
@@ -117,11 +118,9 @@ double Fit(const double lr)
         if (!sample.list_term[i])   
         // decay=0.1
             q_rhs = cfg::decay * max(sample.g_list[i]->num_nodes, list_pred[i]->data());
-        q_rhs += sample.list_rt[i];
+        q_rhs += sample.list_rt[i];   // reward
         list_target[i] = q_rhs;     // reward 
     }
-
-
     return Fit(lr, sample.g_list, sample.list_st, sample.list_at, list_target);
 }
 
@@ -203,6 +202,7 @@ double FitWithFarthest(const double lr)
     for (int i = 0; i < cfg::batch_size; ++i)
     {
         list_target[i] = Tsp2dFarthest(sample.g_list[i], *(sample.list_st[i]), sample.list_at[i]);
+        // about distance 
     }
     return Fit(lr, sample.g_list, sample.list_st, sample.list_at, list_target);
 }

@@ -10,11 +10,13 @@ using namespace gnn;
 
 #define inf 2147483647/2
 
-INet* net = nullptr;
+INet* net = nullptr;       // about qnet
 
 std::vector<int> batch_idxes;
 
-void Predict(std::vector< std::shared_ptr<Graph> >& g_list, std::vector< std::vector<int>* >& covered, std::vector< std::vector<double>* >& pred)
+void Predict(std::vector< std::shared_ptr<Graph> >& g_list, 
+std::vector< std::vector<int>* >& covered, 
+std::vector< std::vector<double>* >& pred)
 {
     DTensor<CPU, Dtype> output;
     int n_graphs = g_list.size();
@@ -51,7 +53,9 @@ void Predict(std::vector< std::shared_ptr<Graph> >& g_list, std::vector< std::ve
     }   
 }
 
-void PredictWithSnapshot(std::vector< std::shared_ptr<Graph> >& g_list, std::vector< std::vector<int>* >& covered, std::vector< std::vector<double>* >& pred)
+void PredictWithSnapshot(std::vector< std::shared_ptr<Graph> >& g_list, 
+                            std::vector< std::vector<int>* >& covered, 
+                            std::vector< std::vector<double>* >& pred)
 {
     net->UseOldModel();
     Predict(g_list, covered, pred);

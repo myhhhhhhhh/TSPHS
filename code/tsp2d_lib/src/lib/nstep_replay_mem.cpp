@@ -57,7 +57,8 @@ void NStepReplayMem::Add(std::shared_ptr<Graph> g,
 
 void NStepReplayMem::Add(IEnv* env)
 {
-    assert(env->isTerminal());
+    // add env data into the memory, when isTerminal() is true
+    assert(env->isTerminal());  // if false, then shut down the program
     int num_steps = env->state_seq.size();
     assert(num_steps);
 
