@@ -14,6 +14,7 @@ public:
     Graph(const int _num_nodes, const double* _coor_x, const double* _coor_y);
     int num_nodes;
     int num_edges;
+
     std::vector< double > coor_x, coor_y;
     std::vector< std::vector< double > > dist;
 

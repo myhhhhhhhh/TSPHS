@@ -60,6 +60,7 @@ bool Tsp2dEnv::isTerminal()
 {
     assert(graph);
     return ((int)action_list.size() == graph->num_nodes);
+    // true for isTerminal 
 }
 
 double Tsp2dEnv::add_node(int new_node)
