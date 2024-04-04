@@ -120,6 +120,7 @@ if __name__ == '__main__':
     max_iter=200000
     
     save_dir = result_root+'/ntype-%s-embed%d-nbp%d-rh%d' % (net_type, embed_dim, max_bp_iter, reg_hidden)
+    # print(save_dir)
 
     opt = {}
     # for i in range(1, len(sys.argv), 2):
@@ -127,7 +128,7 @@ if __name__ == '__main__':
     
     opt.update({"net_type": net_type,
                 "n_step": n_step,
-                "data_root": '/home/cwq/TSPHS/test/cwq-test-data',
+                "data_root": '/home/cwq/TSPHS/data/tsp2d',
                 "decay": decay,
                 "knn": knn,
                 "min_n": min_n,
@@ -148,23 +149,19 @@ if __name__ == '__main__':
                 "w_scale": w_scale,                
                 })  
  
-     
     model_file = find_model_file(opt)
     if model_file is not None:
         print('loading', model_file)
         sys.stdout.flush()
         api.LoadModel(model_file)
-
     PrepareGraphs(isValid=True)
     PrepareGraphs(isValid=False)
-
     # startup    
     n_valid = 100
     for i in range(10):
         api.lib.PlayGame(100, ctypes.c_double(1.0))
         # Simulator::run_simulator(n_traj, eps);    env.step(action) with replay buffer, add 100 memory to replay buffer here 
     api.TakeSnapshot()  # update parameters
-
     eps_start = 1.0
     eps_end = 1.0
 
@@ -183,8 +180,11 @@ if __name__ == '__main__':
             for idx in range(n_valid):     # n_valid=100
                 frac += api.lib.Test(idx)       # env.step(action) without replay buffer, don't add memory to replay buffer 
             print('iter', iter, 'lr', lr, 'eps', eps, 'average tour length: ', frac / n_valid)
+            # print("1111")
             sys.stdout.flush()
+            # print("2222222")
             model_path = '%s/nrange_%d_%d_iter_%d.model' % (opt['save_dir'], int(opt['min_n']), int(opt['max_n']), iter) 
+            # print('saving', model_path)
             api.SaveModel(model_path)
 
         if iter % 1000 == 0:

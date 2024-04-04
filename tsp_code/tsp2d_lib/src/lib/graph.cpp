@@ -23,11 +23,12 @@ double Graph::euc_dist(const int i, const int j)
 }
 // 计算欧氏距离
 
-Graph::Graph(const int _num_nodes, const double* _coor_x, const double* _coor_y)
+Graph::Graph(const int _num_nodes, const double* _coor_x, const double* _coor_y, const int* _is_charger)
         : num_nodes(_num_nodes)
 {
     coor_x.resize(num_nodes);
     coor_y.resize(num_nodes);
+    is_charger.resize(num_nodes);
     dist.resize(num_nodes);
     adj_set.resize(num_nodes);
 
@@ -37,6 +38,9 @@ Graph::Graph(const int _num_nodes, const double* _coor_x, const double* _coor_y)
         coor_x[i] = _coor_x[i];
         coor_y[i] = _coor_y[i];
     }
+
+    for (int i = 0; i < num_nodes; ++i)
+        is_charger[i] = _is_charger[i];
 
     std::vector< std::pair<int, double> > neighbors;
 

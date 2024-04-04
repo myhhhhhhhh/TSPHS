@@ -1,4 +1,4 @@
-GNN_HOME=../../../graphnn-bdf51e6
+GNN_HOME=../../graphnn-bdf51e6
 
 include $(GNN_HOME)/make_common
 

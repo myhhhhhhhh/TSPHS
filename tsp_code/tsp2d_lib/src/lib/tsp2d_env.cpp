@@ -87,7 +87,7 @@ double Tsp2dEnv::add_node(int new_node)
     action_list.insert(action_list.begin() + pos + 1, new_node);
     partial_set.insert(new_node);
 
-    std::cout<<"norm = "<<norm<<std::endl;
+    // std::cout<<"norm = "<<norm<<std::endl;
     
     return sign * cur_dist / norm;
 }

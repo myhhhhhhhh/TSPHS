@@ -52,7 +52,7 @@ fi
 python main.py \
     -net_type $net_type \
     -n_step $n_step \
-    -data_root ../../data/tsp2d \
+    -data_root /home/myhan/tsphs/data/tsp2d \
     -decay $decay \
     -knn $knn \
     -min_n $min_n \

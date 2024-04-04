@@ -33,8 +33,12 @@ class Tsp2dLib(object):
         
         # charger information 
         chargers = nx.get_node_attributes(g, 'isCharger')
+        is_charger = (ctypes.c_int * n)()
+        for i in range(n):
+            is_charger[i] = chargers[i]
             
-        return (n, ctypes.cast(coor_x, ctypes.c_void_p), ctypes.cast(coor_y, ctypes.c_void_p)) 
+        return (n, ctypes.cast(coor_x, ctypes.c_void_p), ctypes.cast(coor_y, ctypes.c_void_p), 
+                ctypes.cast(is_charger, ctypes.c_void_p) )
 
     def TakeSnapshot(self):
         self.lib.UpdateSnapshot()
@@ -44,7 +48,7 @@ class Tsp2dLib(object):
         self.lib.ClearTrainGraphs()
 
     def InsertGraph(self, g, is_test):
-        n_nodes, coor_x, coor_y = self.__CtypeNetworkX(g)
+        n_nodes, coor_x, coor_y, is_charger = self.__CtypeNetworkX(g)
         if is_test:
             t = self.ngraph_test
             self.ngraph_test += 1
@@ -52,7 +56,7 @@ class Tsp2dLib(object):
             t = self.ngraph_train
             self.ngraph_train += 1
 
-        self.lib.InsertGraph(is_test, t, n_nodes, coor_x, coor_y)
+        self.lib.InsertGraph(is_test, t, n_nodes, coor_x, coor_y, is_charger)
     
     def LoadModel(self, path_to_model):
         p = ctypes.cast(path_to_model, ctypes.c_char_p)
@@ -61,7 +65,7 @@ class Tsp2dLib(object):
     def SaveModel(self, path_to_model):
         p = path_to_model.encode('utf-8')
         p = ctypes.cast(p, ctypes.c_char_p)
-        # print('p:', p)
+        print('p:', p)
         self.lib.SaveModel(p)
 
     def GetSol(self, gid, maxn):
