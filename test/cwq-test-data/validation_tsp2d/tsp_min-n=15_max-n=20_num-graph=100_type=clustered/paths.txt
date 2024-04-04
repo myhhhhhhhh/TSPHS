@@ -1,0 +1,2 @@
+/nv/pcoc1/hdai8/dataset/rl_comb_opt/data/validation_tsp2d/tsp_min-n=15_max-n=20_num-graph=100_type=clustered/tsp2d_n=19_seed=192713.tsp
+/nv/pcoc1/hdai8/dataset/rl_comb_opt/data/validation_tsp2d/tsp_min-n=15_max-n=20_num-graph=100_type=clustered/tsp2d_n=18_seed=930014.tsp
