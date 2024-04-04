@@ -30,6 +30,9 @@ class Tsp2dLib(object):
 
         for i in range(n):
             coor_x[i], coor_y[i] = coors[i]
+        
+        # charger information 
+        chargers = nx.get_node_attributes(g, 'isCharger')
             
         return (n, ctypes.cast(coor_x, ctypes.c_void_p), ctypes.cast(coor_y, ctypes.c_void_p)) 
 

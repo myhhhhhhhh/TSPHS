@@ -77,9 +77,78 @@ if __name__ == '__main__':
     api = Tsp2dLib(sys.argv)
     # print("sys.argv: ", sys.argv)
     
+    # args 
+    g_type='clustered'
+
+    result_root='results/dqn-'+g_type
+
+    # max belief propagation iteration
+    max_bp_iter=4
+
+    # embedding size
+    embed_dim=64
+
+    # gpu card id
+    dev_id=1
+
+    # max batch size for training/testing
+    batch_size=128
+
+    net_type='QNet'
+    decay=0.1
+
+    # set reg_hidden=0 to make a linear regression
+    reg_hidden=32
+
+    # learning rate
+    learning_rate=0.0001
+
+    # init weights with rand normal(0, w_scale)
+    w_scale=0.01
+
+    # nstep
+    n_step=1
+
+    knn=10
+
+    min_n=15
+    max_n=20
+
+    num_env=1
+    mem_size=50000
+
+    max_iter=200000
+    
+    save_dir = result_root+'/ntype-%s-embed%d-nbp%d-rh%d' % (net_type, embed_dim, max_bp_iter, reg_hidden)
+
     opt = {}
-    for i in range(1, len(sys.argv), 2):
-        opt[sys.argv[i][1:]] = sys.argv[i + 1] 
+    # for i in range(1, len(sys.argv), 2):
+    #     opt[sys.argv[i][1:]] = sys.argv[i + 1] 
+    
+    opt.update({"net_type": net_type,
+                "n_step": n_step,
+                "data_root": '/home/cwq/TSPHS/test/cwq-test-data',
+                "decay": decay,
+                "knn": knn,
+                "min_n": min_n,
+                "max_n": max_n,
+                "num_env": num_env,
+                "max_iter": max_iter,
+                "mem_size": mem_size,
+                "g_type": g_type,
+                "learning_rate": learning_rate,
+                "max_bp_iter": max_bp_iter,
+                "net_type": net_type, 
+                "save_dir": save_dir,
+                "embed_dim": embed_dim,
+                "batch_size": batch_size,
+                "reg_hidden": reg_hidden,
+                "momentum": 0.9,
+                "momentum": 0.0,
+                "w_scale": w_scale,                
+                })  
+ 
+     
     model_file = find_model_file(opt)
     if model_file is not None:
         print('loading', model_file)

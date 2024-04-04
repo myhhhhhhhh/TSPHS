@@ -46,7 +46,7 @@ def PrepareGraphs(isValid):
             g.add_nodes_from(range(n_nodes))
             nx.set_node_attributes(g, coors, 'pos')
             nx.set_node_attributes(g, chargers, 'isCharger')
-            # api.InsertGraph(g, is_test=isValid)
+            # api.InsertGraph(g, is_test=isValid) 
             print("nx graph added")
 
 
