@@ -39,7 +39,7 @@ max_n=20
 num_env=1
 mem_size=50000
 
-max_iter=200000
+max_iter=20000
 
 # folder to save the trained model
 save_dir=$result_root/ntype-$net_type-embed-$embed_dim-nbp-$max_bp_iter-rh-$reg_hidden
@@ -52,7 +52,7 @@ fi
 python main.py \
     -net_type $net_type \
     -n_step $n_step \
-    -data_root /home/myhan/tsphs/data/tsp2d \
+    -data_root /data/myh/tsp2d_charger \
     -decay $decay \
     -knn $knn \
     -min_n $min_n \

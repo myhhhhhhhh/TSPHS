@@ -65,7 +65,7 @@ class Tsp2dLib(object):
     def SaveModel(self, path_to_model):
         p = path_to_model.encode('utf-8')
         p = ctypes.cast(p, ctypes.c_char_p)
-        print('p:', p)
+        # print('p:', p)
         self.lib.SaveModel(p)
 
     def GetSol(self, gid, maxn):

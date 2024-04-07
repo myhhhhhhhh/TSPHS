@@ -4,3 +4,5 @@
 .vscode/ 
 /tsp_code/results/
 .env
+/graphnn-bdf51e6/build_cpuonly/
+/tsp_code/tsp2d_lib/build/
