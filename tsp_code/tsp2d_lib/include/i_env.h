@@ -10,7 +10,7 @@ class IEnv
 {
 public:
 
-    IEnv(double _norm) : norm(_norm), graph(nullptr) {}
+    IEnv(double _norm) : norm(_norm), graph(nullptr), soc(0.2) {}
 
     virtual void s0(std::shared_ptr<Graph> _g) = 0;
 
@@ -26,6 +26,9 @@ public:
     std::vector< std::vector<int> > state_seq;
     std::vector<int> act_seq, action_list;
     std::vector<double> reward_seq, sum_rewards;
+
+    double soc;
+    std::vector<double> soc_seq;    
 };
 
 #endif

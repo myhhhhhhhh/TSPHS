@@ -55,7 +55,9 @@ def PrepareGraphs(isValid):
         for line in tqdm(f):
             fname = '%s/%s' % (folder, line.split('/')[-1].strip())
             coors = {}
+            chargers = {}
             in_sec = False
+            in_charger = False
             n_nodes = -1
             with open(fname, 'r') as f_tsp:
                 for l in f_tsp:
@@ -67,6 +69,14 @@ def PrepareGraphs(isValid):
                         assert len(coors) == idx
                     elif 'NODE_COORD_SECTION' in l:
                         in_sec = True
+                        in_charger = False
+                    elif in_charger:
+                        idx, isCharger = [int(w.strip()) for w in l.split(' ')]
+                        chargers[idx - 1] = isCharger
+                        assert len(chargers) == idx 
+                    elif 'NODE_CHARGER_SECTION' in l:
+                        in_charger = True
+                        in_sec = False
             assert len(coors) == n_nodes
             g = nx.Graph()
             g.add_nodes_from(range(n_nodes))
@@ -128,7 +138,7 @@ if __name__ == '__main__':
     
     opt.update({"net_type": net_type,
                 "n_step": n_step,
-                "data_root": '/home/cwq/TSPHS/data/tsp2d',
+                "data_root": '/data/myh/tsp2d_charger',
                 "decay": decay,
                 "knn": knn,
                 "min_n": min_n,

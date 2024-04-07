@@ -23,8 +23,10 @@ void Tsp2dEnv::s0(std::shared_ptr<Graph> _g)
     act_seq.clear();
     reward_seq.clear();
     sum_rewards.clear();
+    soc = 0.2;
+    soc_seq.clear();
 }
-
+double soc_norm = 1;
 double Tsp2dEnv::step(int a)
 {
     assert(graph);
@@ -38,6 +40,17 @@ double Tsp2dEnv::step(int a)
     
     reward_seq.push_back(r_t);
     sum_rewards.push_back(r_t);  
+
+    int is_charger = get_charger_attributes(a);
+    if(is_charger)
+    {
+        soc = 1.0;
+    }
+    else
+    {
+        soc -= graph->dist[action_list.back()][a] / soc_norm;
+    }    
+    soc_seq.push_back(soc);
 
     return r_t;
 }
@@ -88,6 +101,16 @@ double Tsp2dEnv::add_node(int new_node)
     partial_set.insert(new_node);
 
     // std::cout<<"norm = "<<norm<<std::endl;
-    
-    return sign * cur_dist / norm;
+    double r_t = sign * cur_dist / norm;
+    if (soc <= 0.1)
+    {
+        r_t -= 100;
+    }
+    return r_t;
+}
+
+int Tsp2dEnv::get_charger_attributes(int node)
+{
+    assert(graph);
+    return graph->is_charger[node - 1];
 }

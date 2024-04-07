@@ -11,6 +11,7 @@ Graph::Graph() : num_nodes(0), num_edges(0)
 {
     coor_x.clear();
     coor_y.clear();
+    is_charger.clear();
     dist.clear();
     adj_set.clear();
 }

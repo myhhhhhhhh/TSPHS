@@ -73,7 +73,7 @@ int UpdateSnapshot()
     return 0;
 }
 
-int InsertGraph(bool isTest, const int g_id, const int num_nodes, const double* coor_x, const double* coor_y, const int is_charger)
+int InsertGraph(bool isTest, const int g_id, const int num_nodes, const double* coor_x, const double* coor_y, const int* is_charger)
 {
     auto g = std::make_shared<Graph>(num_nodes, coor_x, coor_y, is_charger);
     if (isTest)

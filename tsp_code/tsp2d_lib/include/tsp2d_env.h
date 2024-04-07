@@ -19,6 +19,8 @@ public:
 
     virtual bool isTerminal() override;
 
+    virtual int get_charger_attributes(int node);
+
     double add_node(int new_node);
 
     std::set<int> partial_set;
