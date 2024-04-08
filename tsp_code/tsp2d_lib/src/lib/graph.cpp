@@ -14,6 +14,7 @@ Graph::Graph() : num_nodes(0), num_edges(0)
     is_charger.clear();
     dist.clear();
     adj_set.clear();
+    soc_seq.clear();
 }
 
 double Graph::euc_dist(const int i, const int j)

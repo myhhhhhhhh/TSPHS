@@ -196,10 +196,8 @@ if __name__ == '__main__':
             frac = 0.0
             for idx in range(n_valid):     # n_valid=100
                 frac += api.lib.Test(idx)       # env.step(action) without replay buffer, don't add memory to replay buffer 
-            print('iter', iter, 'lr', lr, 'eps', eps, 'average tour length: ', frac / n_valid)
-            # print("1111")
-            sys.stdout.flush()
-            # print("2222222")
+            print('iter', iter, 'lr', lr, 'eps', eps, 'average tour length: ', frac / n_valid)            
+            sys.stdout.flush()            
             model_path = '%s/nrange_%d_%d_iter_%d.model' % (opt['save_dir'], int(opt['min_n']), int(opt['max_n']), iter) 
             # print('saving', model_path)
             api.SaveModel(model_path)

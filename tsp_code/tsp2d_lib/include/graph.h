@@ -19,6 +19,8 @@ public:
     std::vector< std::vector< double > > dist;
 
     std::vector< std::set<int> > adj_set;
+    
+    std::vector<double> soc_seq;
 
 protected:
     double euc_dist(const int i, const int j);

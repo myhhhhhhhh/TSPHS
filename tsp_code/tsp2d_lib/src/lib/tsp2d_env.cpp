@@ -24,7 +24,7 @@ void Tsp2dEnv::s0(std::shared_ptr<Graph> _g)
     reward_seq.clear();
     sum_rewards.clear();
     soc = 0.2;
-    soc_seq.clear();
+    // soc_seq.clear();
 }
 double soc_norm = 1;
 double Tsp2dEnv::step(int a)
@@ -50,7 +50,7 @@ double Tsp2dEnv::step(int a)
     {
         soc -= graph->dist[action_list.back()][a] / soc_norm;
     }    
-    soc_seq.push_back(soc);
+    graph->soc_seq.push_back(soc);
 
     return r_t;
 }

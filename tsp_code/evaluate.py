@@ -38,22 +38,39 @@ def TestSet():
         for line in f:
             fname = '%s/%s' % (folder, line.split('/')[-1].strip())
             coors = {}
+            chargers = {}
             in_sec = False
+            in_charger = False
             n_nodes = -1
             with open(fname, 'r') as f_tsp:
                 for l in f_tsp:
                     if 'DIMENSION' in l:
                         n_nodes = int(l.split(' ')[-1].strip())
+                    elif 'NODE_COORD_SECTION' in l:
+                        in_sec = True
+                        in_charger = False
+                        continue
+                    elif 'NODE_CHARGER_SECTION' in l:
+                        in_charger = True
+                        in_sec = False
+                        continue
+                    elif l == '\n':
+                        in_sec = False
+                        in_charger = False
                     if in_sec:
                         idx, x, y = [int(w.strip()) for w in l.split(' ')]
                         coors[idx - 1] = [float(x) / 1000000.0, float(y) / 1000000.0]
-                        assert len(coors) == idx
-                    elif 'NODE_COORD_SECTION' in l:
-                        in_sec = True
+                        assert len(coors) == idx                    
+                    elif in_charger:
+                        idx, isCharger = [int(w.strip()) for w in l.split(' ')]
+                        chargers[idx - 1] = isCharger
+                        assert len(chargers) == idx 
             assert len(coors) == n_nodes
             g = nx.Graph()
             g.add_nodes_from(range(n_nodes))
             nx.set_node_attributes(g, coors, 'pos')
+            nx.set_node_attributes(g, chargers, 'isCharger')
+            
             yield g            
 
 if __name__ == '__main__':
@@ -86,10 +103,20 @@ if __name__ == '__main__':
             t2 = time.time()
             f_out.write('%.8f,' % val)
             f_out.write('%d' % sol[0])
+            chargers = nx.get_node_attributes(g, 'isCharger')
+            soc_seq = nx.get_node_attributes(g, 'soc_seq')  
             for i in range(sol[0]):
-                f_out.write(' %d' % sol[i + 1])
+                node_id = sol[i + 1]
+                soc_seq_i = soc_seq.get(node_id, [0])
+                soc = soc_seq[-1] if soc_seq else 0  # 获取 soc_seq 的最后一个值，如果 soc_seq 为空，则 soc 为 0                
+                is_charge = chargers[node_id]
+                # f_out.write(' %d' % node_id)
+                f_out.write(' %d(soc=%.2f)' % (node_id, soc))
+                if is_charge:
+                    f_out.write('(c)')
             f_out.write(',%.6f\n' % (t2 - t1))
             frac += val
+            
 
             idx += 1
 

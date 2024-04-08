@@ -51,7 +51,7 @@ python evaluate.py \
     -net_type $net_type \
     -dev_id $dev_id \
     -n_step $n_step \
-    -data_root ../../data/tsp2d \
+    -data_root /data/myh/tsp2d_charger \
     -decay $decay \
     -knn $knn \
     -test_min_n $test_min_n \
