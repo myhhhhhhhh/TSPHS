@@ -228,7 +228,7 @@ double Test(const int gid)
     return v;
 }
 
-double GetSol(const int gid, int* sol)
+double GetSol(const int gid, int* sol, double* soc_list)
 {
     std::vector< std::shared_ptr<Graph> > g_list(1);
     std::vector< std::vector<int>* > states(1);
@@ -248,8 +248,13 @@ double GetSol(const int gid, int* sol)
     }
     
     sol[0] = test_env->graph->num_nodes;
+    soc_list[0] = test_env->graph->num_nodes;
     for (int i = 0; i < test_env->graph->num_nodes; ++i)
+        {
         sol[i + 1] = test_env->action_list[i];    
+        soc_list[i + 1] = test_env->soc_list[i];
+        }
+    // std::cout<<"soc_seq: "<<soc_list[0]<<std::endl;
     return v;
 }
 

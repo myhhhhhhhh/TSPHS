@@ -33,6 +33,7 @@ Graph::Graph(const int _num_nodes, const double* _coor_x, const double* _coor_y,
     is_charger.resize(num_nodes);
     dist.resize(num_nodes);
     adj_set.resize(num_nodes);
+    soc_seq.resize(num_nodes);
 
     for (int i = 0; i < num_nodes; ++i)
     {

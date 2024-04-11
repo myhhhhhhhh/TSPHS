@@ -25,6 +25,6 @@ extern "C" int SetSign(int s);
 
 extern "C" int ClearMem();
 
-extern "C" double GetSol(const int gid, int* sol);
+extern "C" double GetSol(const int gid, int* sol, double* soc_seq);
 
 #endif

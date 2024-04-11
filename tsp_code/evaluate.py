@@ -99,19 +99,20 @@ if __name__ == '__main__':
         for g in tqdm(TestSet()):
             api.InsertGraph(g, is_test=True)
             t1 = time.time()
-            val, sol = api.GetSol(idx, nx.number_of_nodes(g))
+            val, sol, soc_list = api.GetSol(idx, nx.number_of_nodes(g))
             t2 = time.time()
             f_out.write('%.8f,' % val)
             f_out.write('%d' % sol[0])
             chargers = nx.get_node_attributes(g, 'isCharger')
-            soc_seq = nx.get_node_attributes(g, 'soc_seq')  
+            # soc_seq = nx.get_node_attributes(g, 'soc_seq')  
             for i in range(sol[0]):
                 node_id = sol[i + 1]
-                soc_seq_i = soc_seq.get(node_id, [0])
-                soc = soc_seq[-1] if soc_seq else 0  # 获取 soc_seq 的最后一个值，如果 soc_seq 为空，则 soc 为 0                
+                soc_id = soc_list[i+1]
+                # soc_seq_i = soc_seq.get(node_id, [0])
+                # soc = soc_seq_i[-1] if soc_seq_i else 0  # 获取 soc_seq 的最后一个值，如果 soc_seq 为空，则 soc 为 0                
                 is_charge = chargers[node_id]
                 # f_out.write(' %d' % node_id)
-                f_out.write(' %d(soc=%.2f)' % (node_id, soc))
+                f_out.write(' %d(SOC=%.2f)' % (node_id, soc_id))
                 if is_charge:
                     f_out.write('(c)')
             f_out.write(',%.6f\n' % (t2 - t1))

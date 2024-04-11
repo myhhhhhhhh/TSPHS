@@ -70,8 +70,9 @@ class Tsp2dLib(object):
 
     def GetSol(self, gid, maxn):
         sol = (ctypes.c_int * (maxn + 10))()
-        val = self.lib.GetSol(gid, sol)
-        return val, sol
+        soc_seq = (ctypes.c_double * (maxn + 10))()
+        val = self.lib.GetSol(gid, sol, soc_seq)
+        return val, sol, soc_seq
 
 if __name__ == '__main__':
     f = Tsp2dLib(sys.argv)

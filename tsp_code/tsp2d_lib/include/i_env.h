@@ -28,7 +28,7 @@ public:
     std::vector<double> reward_seq, sum_rewards;
 
     double soc;
-    // std::vector<double> soc_seq;    
+    std::vector<double> soc_list;    
 };
 
 #endif
