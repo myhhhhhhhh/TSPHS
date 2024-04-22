@@ -5,10 +5,13 @@
 #include <iostream>
 
 int sign = 1;
+double soc_ref = 0.5;
+double soc_init = 0.2;
+
 
 Tsp2dEnv::Tsp2dEnv(double _norm) : IEnv(_norm)
 {
-
+    // std::cout<<"Tsp2dEnv::Tsp2dEnv, _norm: "<<_norm<<std::endl;     // max_n
 }
 
 void Tsp2dEnv::s0(std::shared_ptr<Graph> _g)
@@ -20,13 +23,17 @@ void Tsp2dEnv::s0(std::shared_ptr<Graph> _g)
     partial_set.insert(0);
 
     state_seq.clear();
+    state_already_list.clear();
+    state_already_list.push_back(0);
     act_seq.clear();
     reward_seq.clear();
     sum_rewards.clear();
-    soc = 0.2;
+    soc = soc_init;
     soc_list.clear();    
+    soc_list.push_back(soc);
+    std::cout<<"\nreset"<<std::endl; 
 }
-double soc_norm = 100;
+double soc_norm = 300;
 double Tsp2dEnv::step(int a)
 {
     assert(graph);
@@ -36,22 +43,35 @@ double Tsp2dEnv::step(int a)
     state_seq.push_back(action_list);
     act_seq.push_back(a);
 
+    // std::cout<<"L44: i: "<<state_already_list.back()<<", a: "<<a<<std::endl;
     double r_t = add_node(a);
     
     reward_seq.push_back(r_t);
     sum_rewards.push_back(r_t);  
 
     int is_charger = get_charger_attributes(a);
-    if(is_charger)
+    std::cout<<"soc: "<<soc<<", is_charger: "<<is_charger<<", a: "<<a<<std::endl;
+    if(is_charger==1)
     {
-        soc = 0.8;
+        soc = soc_ref;
+        std::cout<<"Charger node: "<<a<<"soc:"<<soc<<std::endl;
     }
     else
     {
-        soc -= graph->dist[action_list.back()][a] / soc_norm;
+        double distance = graph->dist[state_already_list.back()][a];
+        std::cout<<"i: "<<state_already_list.back()<<", a: "<<a<<", dist:"<<distance<<std::endl;
+        double soc_del = distance / soc_norm;
+        soc -= soc_del;
+        std::cout<<"soc_del: "<<soc_del<<", soc: "<<soc<<std::endl;
     }    
-    // graph->soc_seq.push_back(soc);
+    std::cout<<"after soc_del, soc: "<<soc<<std::endl; 
     soc_list.push_back(soc);
+    state_already_list.push_back(a);
+    int end = graph->num_nodes;
+    for (int i = 0; i < end; ++i) {
+        std::cout << "tsp2d_env_soc_list[" << i << "]: " << soc_list[i] << std::endl;
+    }
+    std::cout<<"end:"<<end<<"in step() tsp2d_env.cpp"<<std::endl;
 
     return r_t;
 }
@@ -105,7 +125,7 @@ double Tsp2dEnv::add_node(int new_node)
     double r_t = sign * cur_dist / norm;
     if (soc <= 0.1)
     {
-        r_t -= 100 * (0.8 - soc);
+        r_t -= 100 * (soc_ref - soc);
     }
     return r_t;
 }
@@ -113,5 +133,5 @@ double Tsp2dEnv::add_node(int new_node)
 int Tsp2dEnv::get_charger_attributes(int node)
 {
     assert(graph);
-    return graph->is_charger[node - 1];
+    return graph->is_charger[node];
 }

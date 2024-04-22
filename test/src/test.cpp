@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <glog/logging.h>
 using namespace std;
 
 int main(){
@@ -28,6 +29,12 @@ int main(){
     //         break;
     //     }
     // }
+
+ 
+  
+    google::InitGoogleLogging("./tstlog"); //初始化 glog
+    LOG(INFO) << "Hello,GOOGLE!";
+ 
 
     return 0;
 }

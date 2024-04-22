@@ -228,33 +228,45 @@ double Test(const int gid)
     return v;
 }
 
-double GetSol(const int gid, int* sol, double* soc_list)
+double GetSol(const int gid, int* sol, int* sol_state_already_list, double* soc_list)
 {
     std::vector< std::shared_ptr<Graph> > g_list(1);
     std::vector< std::vector<int>* > states(1);
-
+    
+    test_env = new Tsp2dEnv(cfg::max_n);
     test_env->s0(GSetTest.Get(gid));
     states[0] = &(test_env->action_list);
-    g_list[0] = test_env->graph;
+    g_list[0] = test_env->graph;        // point to one graph
 
     double v = 0;
     int new_action;
+    int count = 1;
     while (!test_env->isTerminal())
     {
         Predict(g_list, states, list_pred);
         auto& scores = *(list_pred[0]);
         new_action = arg_max(test_env->graph->num_nodes, scores.data());
+        std::cout<<"******count: "<<count<<", run step() in tsp2d_lib.cpp"<<std::endl;
         v += test_env->step(new_action) * cfg::max_n;
+        count += 1; 
     }
+    int end = test_env->graph->num_nodes;
+    std::cout<<"******count: "<<count<<", end: "<<end<<", in tsp2d_lib.cpp"<<std::endl;
     
     sol[0] = test_env->graph->num_nodes;
+    sol_state_already_list[0] = test_env->graph->num_nodes;
     soc_list[0] = test_env->graph->num_nodes;
     for (int i = 0; i < test_env->graph->num_nodes; ++i)
         {
         sol[i + 1] = test_env->action_list[i];    
+        sol_state_already_list[i + 1] = test_env->state_already_list[i];
         soc_list[i + 1] = test_env->soc_list[i];
         }
-    // std::cout<<"soc_seq: "<<soc_list[0]<<std::endl;
+    
+    for (int i = 0; i < end; ++i) {
+        std::cout << "-----------test_env->soc_list[" << i << "]: " << test_env->soc_list[i] << std::endl;
+    }    
+    delete test_env; 
     return v;
 }
 

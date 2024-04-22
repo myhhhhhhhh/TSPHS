@@ -47,6 +47,7 @@ max_iter=200000
 # folder to save the trained model
 save_dir=$result_root/ntype-$net_type-embed-$embed_dim-nbp-$max_bp_iter-rh-$reg_hidden
 
+# python -m debugpy --listen 5678 --wait-for-client evaluate.py \
 python evaluate.py \
     -net_type $net_type \
     -dev_id $dev_id \

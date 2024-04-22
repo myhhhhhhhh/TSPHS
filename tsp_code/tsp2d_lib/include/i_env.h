@@ -24,7 +24,7 @@ public:
     std::shared_ptr<Graph> graph;
     
     std::vector< std::vector<int> > state_seq;
-    std::vector<int> act_seq, action_list;
+    std::vector<int> act_seq, action_list, state_already_list;
     std::vector<double> reward_seq, sum_rewards;
 
     double soc;
