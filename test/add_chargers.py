@@ -1,7 +1,7 @@
 import random
 from tqdm import tqdm
  
-data_root = '/data/myh/tsp2d_charger'
+data_root = '/data/myh/tsp2d_charger_from1'
 prefixes = ['validation_tsp2d', 'train_tsp2d', 'test_tsp2d']
 prefix_n_graphs = {'validation_tsp2d': 100,
                    'train_tsp2d': 10000,
@@ -28,10 +28,10 @@ for min_max in range(len(min_n_max_n[prefix])):
                             if 'DIMENSION' in l:
                                 n_nodes = int(l.split(' ')[-1].strip())
                                 break
-                random_charger = random.randint(0, n_nodes-1)
+                random_charger = random.randint(1, n_nodes-1)
                 
                 with open(fname, 'a') as f_tsp:
-                    f_tsp.write("\nNODE_CHARGER_SECTION")
+                    f_tsp.write("NODE_CHARGER_SECTION")
                     for i in range(n_nodes):
                         if i == random_charger:
                             f_tsp.write("\n%d %d" % (i+1, 1))

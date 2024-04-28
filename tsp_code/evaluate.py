@@ -132,7 +132,7 @@ if __name__ == '__main__':
     opt.update({'net_type': net_type, 
                 'dev_id': dev_id, 
                 'n_step': n_step, 
-                'data_root': '/data/myh/tsp2d_charger', 
+                'data_root': '/data/myh/tsp2d_charger_from1', 
                 'decay': decay, 
                 'knn': knn, 
                 'test_min_n': str(test_min_n) ,
@@ -156,6 +156,7 @@ if __name__ == '__main__':
     
 
     model_file = find_model_file(opt)
+    # model_file = '/home/myhan/tsphs/tsp_code/results/dqn-clustered/ntype-QNet-embed-64-nbp-4-rh-32/nrange_15_20_iter_99800.model'
     assert model_file is not None
     print('loading', model_file)
     sys.stdout.flush()
@@ -179,24 +180,29 @@ if __name__ == '__main__':
             t2 = time.time()
             f_out.write('%.8f,' % val)
             f_out.write('%d' % sol[0])
-            chargers = nx.get_node_attributes(g, 'isCharger')
-            # for i in range(min(len(soc_list), max_n + 10)):
-            #     print('soc_list[{}]:'.format(i), soc_list[i])
-            # print('soc_list:', soc_list)
+            chargers = nx.get_node_attributes(g, 'isCharger')                       
             
-            # soc_seq = nx.get_node_attributes(g, 'soc_seq')  
             for i in range(sol[0]):
                 node_id = sol[i + 1]
                 node_id_new = sol_state_already_list[i + 1]
-                soc_id = soc_list[i + 1]
-                # soc_seq_i = soc_seq.get(node_id, [0])
-                # soc = soc_seq_i[-1] if soc_seq_i else 0  # 获取 soc_seq 的最后一个值，如果 soc_seq 为空，则 soc 为 0                
+                soc_id = soc_list[i + 1]                               
                 is_charge = chargers[node_id_new]
                 # f_out.write(' %d' % node_id)
                 f_out.write(' %d(SOC=%.6f)' % (node_id_new, soc_id))
                 if is_charge:
                     f_out.write('(c)')
             f_out.write(',%.6f\n' % (t2 - t1))
+            
+            sol_list = []
+            for i in range(sol[0]):                
+                sol_list.append(sol[i + 1])
+            coor_list = []
+            for i in range(nx.number_of_nodes(g)):
+                coor_list.append(g.nodes[i]['pos'])
+                        
+            data_set = {'val': val, 'node_num': sol[0], 'sol': sol_list, 'soc_list': soc_list, 'coor': coor_list, 'time': t2 - t1}
+            os.makedirs(os.path.dirname(save_dir + ('/matdata/graph%d.mat'% idx)) , exist_ok=True)
+            scio.savemat(save_dir + ('/matdata/graph%d.mat'% idx), mdict=data_set)
             frac += val            
 
             idx += 1

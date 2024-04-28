@@ -1,6 +1,6 @@
 #!/bin/bash
 
-g_type=clustered
+g_type=random
 
 result_root=results/dqn-$g_type
 
@@ -52,7 +52,7 @@ fi
 python main.py \
     -net_type $net_type \
     -n_step $n_step \
-    -data_root /data/myh/tsp2d_charger \
+    -data_root /data/myh/tsp2d_charger_from1 \
     -decay $decay \
     -knn $knn \
     -min_n $min_n \

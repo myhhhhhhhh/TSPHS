@@ -145,7 +145,7 @@ if __name__ == '__main__':
     
     # opt.update({"net_type": net_type,
     #             "n_step": n_step,
-    #             "data_root": '/data/myh/tsp2d_charger',
+    #             "data_root": '/data/myh/tsp2d_charger_from1',
     #             "decay": decay,
     #             "knn": knn,
     #             "min_n": min_n,

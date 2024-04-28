@@ -45,14 +45,14 @@ mem_size=50000
 max_iter=200000
 
 # folder to save the trained model
-save_dir=$result_root/ntype-$net_type-embed-$embed_dim-nbp-$max_bp_iter-rh-$reg_hidden
+save_dir=$result_root/ntype-$net_type-embed-$embed_dim-nbp-$max_bp_iter-rh-$reg_hidden-0125punish
 
 # python -m debugpy --listen 5678 --wait-for-client evaluate.py \
 python evaluate.py \
     -net_type $net_type \
     -dev_id $dev_id \
     -n_step $n_step \
-    -data_root /data/myh/tsp2d_charger \
+    -data_root /data/myh/tsp2d_charger_from1 \
     -decay $decay \
     -knn $knn \
     -test_min_n $test_min_n \

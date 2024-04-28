@@ -246,12 +246,12 @@ double GetSol(const int gid, int* sol, int* sol_state_already_list, double* soc_
         Predict(g_list, states, list_pred);
         auto& scores = *(list_pred[0]);
         new_action = arg_max(test_env->graph->num_nodes, scores.data());
-        std::cout<<"******count: "<<count<<", run step() in tsp2d_lib.cpp"<<std::endl;
+        // std::cout<<"******count: "<<count<<", run step() in tsp2d_lib.cpp"<<std::endl;
         v += test_env->step(new_action) * cfg::max_n;
         count += 1; 
     }
     int end = test_env->graph->num_nodes;
-    std::cout<<"******count: "<<count<<", end: "<<end<<", in tsp2d_lib.cpp"<<std::endl;
+    // std::cout<<"******count: "<<count<<", end: "<<end<<", in tsp2d_lib.cpp"<<std::endl;
     
     sol[0] = test_env->graph->num_nodes;
     sol_state_already_list[0] = test_env->graph->num_nodes;
@@ -264,7 +264,7 @@ double GetSol(const int gid, int* sol, int* sol_state_already_list, double* soc_
         }
     
     for (int i = 0; i < end; ++i) {
-        std::cout << "-----------test_env->soc_list[" << i << "]: " << test_env->soc_list[i] << std::endl;
+        // std::cout << "-----------test_env->soc_list[" << i << "]: " << test_env->soc_list[i] << std::endl;
     }    
     delete test_env; 
     return v;
